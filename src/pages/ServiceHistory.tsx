@@ -172,16 +172,29 @@ export default function ServiceHistory() {
 
       if (error) throw error;
 
-      // Process services to mark duplicates
-      const processedServices = (data || []).map((service, index, array) => {
-        const isDuplicate = array.some((otherService, otherIndex) => {
-          if (index <= otherIndex) return false;
+      // Create a map to store duplicate groups
+      const duplicateGroups = new Map<string, ServiceRecord[]>();
+
+      // Group services by contract number
+      (data || []).forEach(service => {
+        const key = service.contract_number;
+        if (!duplicateGroups.has(key)) {
+          duplicateGroups.set(key, []);
+        }
+        duplicateGroups.get(key)?.push(service);
+      });
+
+      // Process services and mark duplicates
+      const processedServices = (data || []).map(service => {
+        const group = duplicateGroups.get(service.contract_number) || [];
+        const isDuplicate = group.length > 1 && group.some(other => {
+          if (other.id === service.id) return false;
           
           const serviceTime = new Date(service.created_at).getTime();
-          const otherTime = new Date(otherService.created_at).getTime();
+          const otherTime = new Date(other.created_at).getTime();
           const hourDiff = Math.abs(serviceTime - otherTime) / (1000 * 60 * 60);
           
-          return service.contract_number === otherService.contract_number && hourDiff < 1;
+          return hourDiff < 1;
         });
 
         return { ...service, isDuplicate };

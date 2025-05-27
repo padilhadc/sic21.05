@@ -20,7 +20,7 @@ import {
   Hash,
   Grid,
   Home,
-  Map,
+  Map as MapIcon,
   MessageSquare,
   SlidersHorizontal,
   Image as ImageIcon,
@@ -36,153 +36,44 @@ import * as XLSX from 'xlsx';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-interface ServiceRecord {
-  id: string;
-  operator_name: string;
-  technician_name: string;
-  company_name: string;
-  available_slots: string;
-  unit: string;
-  area_cx: string;
-  contract_number: string;
-  service_type: string;
-  visited_cxs: string;
-  neighborhood: string;
-  street: string;
-  cto_location: string;
-  created_at: string;
-  general_comments?: string;
-  images?: string[];
-  isDuplicate?: boolean;
+let query = supabase
+  .from('service_records')
+  .select('*', { count: 'exact' })
+  .order('created_at', { ascending: false });
+
+const dateFilter = getDateRangeFilter();
+if (dateFilter) {
+  query = query.gte('created_at', dateFilter);
 }
 
-interface FilterOptions {
-  dateRange: 'all' | 'today' | 'week' | 'month';
-  serviceType: string;
-  neighborhood: string;
-  operator: string;
+if (filters.serviceType) {
+  query = query.eq('service_type', filters.serviceType);
 }
 
-export default function ServiceHistory() {
-  const { isAdmin } = useAuth();
-  const [services, setServices] = useState<ServiceRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedService, setSelectedService] = useState<ServiceRecord | null>(null);
-  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(50);
-  const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState<FilterOptions>({
-    dateRange: 'all',
-    serviceType: '',
-    neighborhood: '',
-    operator: ''
-  });
-  const [showImages, setShowImages] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [uniqueOperators, setUniqueOperators] = useState<string[]>([]);
-  const [editMode, setEditMode] = useState(false);
-  const [editedService, setEditedService] = useState<ServiceRecord | null>(null);
-  const [saving, setSaving] = useState(false);
+if (filters.neighborhood) {
+  query = query.eq('neighborhood', filters.neighborhood);
+}
 
-  const serviceTypeStyles = {
-    'Ativação': {
-      bg: 'bg-green-100',
-      text: 'text-green-800',
-      icon: <Box className="h-4 w-4" />
-    },
-    'Reparo': {
-      bg: 'bg-orange-100',
-      text: 'text-orange-800',
-      icon: <Wrench className="h-4 w-4" />
-    },
-    'Mudança Endereço': {
-      bg: 'bg-blue-100',
-      text: 'text-blue-800',
-      icon: <MapPin className="h-4 w-4" />
-    },
-    'Clean Up': {
-      bg: 'bg-purple-100',
-      text: 'text-purple-800',
-      icon: <Grid className="h-4 w-4" />
-    }
-  };
+if (filters.operator) {
+  query = query.eq('operator_name', filters.operator);
+}
 
-  useEffect(() => {
-    if (selectedService) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedService]);
+const { data, error } = await query;
 
-  useEffect(() => {
-    setLoading(true);
-    fetchServices().finally(() => setLoading(false));
-  }, [filters]);
+if (error) throw error;
 
-  const getDateRangeFilter = () => {
-    const now = new Date();
-    switch (filters.dateRange) {
-      case 'today':
-        return now.toISOString().split('T')[0];
-      case 'week':
-        const lastWeek = new Date(now.setDate(now.getDate() - 7));
-        return lastWeek.toISOString();
-      case 'month':
-        const lastMonth = new Date(now.setMonth(now.getMonth() - 1));
-        return lastMonth.toISOString();
-      default:
-        return null;
-    }
-  };
+// Create a map to store duplicate groups
+const duplicateGroups = new Map<string, ServiceRecord[]>();
 
-  async function fetchServices() {
-    try {
-      setError(null);
-      
-      let query = supabase
-        .from('service_records')
-        .select('*', { count: 'exact' })
-        .order('created_at', { ascending: false });
+// Group services by contract number
+(data || []).forEach(service => {
+  const key = service.contract_number;
+  if (!duplicateGroups.has(key)) {
+    duplicateGroups.set(key, []);
+  }
+  duplicateGroups.get(key)?.push(service);
+});
 
-      const dateFilter = getDateRangeFilter();
-      if (dateFilter) {
-        query = query.gte('created_at', dateFilter);
-      }
-
-      if (filters.serviceType) {
-        query = query.eq('service_type', filters.serviceType);
-      }
-
-      if (filters.neighborhood) {
-        query = query.eq('neighborhood', filters.neighborhood);
-      }
-
-      if (filters.operator) {
-        query = query.eq('operator_name', filters.operator);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-
-      // Create a map to store duplicate groups
-      const duplicateGroups = new Map<string, ServiceRecord[]>();
-
-      // Group services by contract number
-      (data || []).forEach(service => {
-        const key = service.contract_number;
-        if (!duplicateGroups.has(key)) {
-          duplicateGroups.set(key, []);
-        }
-        duplicateGroups.get(key)?.push(service);
-      });
 
       // Process services and mark duplicates
       const processedServices = (data || []).map(service => {

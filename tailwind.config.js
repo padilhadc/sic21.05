@@ -5,15 +5,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#1E517B',
-          light: '#7DFEE3',
-          dark: '#39B197'
-        },
-        secondary: {
-          DEFAULT: '#EEEEEE',
-          accent: '#FD9B7B'
-        }
+        primary: '#002DFF',
+        accent: '#D4AF37',
       },
       animation: {
         'menu-expand': 'menu-expand 0.3s ease-out',

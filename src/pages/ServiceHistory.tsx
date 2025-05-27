@@ -172,21 +172,21 @@ export default function ServiceHistory() {
 
       if (error) throw error;
 
-      // Create an object to store duplicate groups
-      const duplicateGroups: { [key: string]: ServiceRecord[] } = {};
+      // Create a map to store duplicate groups
+      const duplicateGroups = new Map<string, ServiceRecord[]>();
 
       // Group services by contract number
       (data || []).forEach(service => {
         const key = service.contract_number;
-        if (!duplicateGroups[key]) {
-          duplicateGroups[key] = [];
+        if (!duplicateGroups.has(key)) {
+          duplicateGroups.set(key, []);
         }
-        duplicateGroups[key].push(service);
+        duplicateGroups.get(key)?.push(service);
       });
 
       // Process services and mark duplicates
       const processedServices = (data || []).map(service => {
-        const group = duplicateGroups[service.contract_number] || [];
+        const group = duplicateGroups.get(service.contract_number) || [];
         const isDuplicate = group.length > 1 && group.some(other => {
           if (other.id === service.id) return false;
           

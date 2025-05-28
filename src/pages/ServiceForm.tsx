@@ -134,10 +134,7 @@ export default function ServiceForm() {
       'street',
       'neighborhood',
       'cto_location',
-      'general_comments',
-      'cto_1_area',
-      'cto_2_area',
-      'cto_3_area'
+      'general_comments'
     ];
 
     const missingFields = requiredFields.filter(field => !formData[field as keyof ServiceFormData]);
@@ -595,7 +592,7 @@ export default function ServiceForm() {
             <div className="md:col-span-2 space-y-4">
               <div className="space-y-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Área e Caixa 1<RequiredField />
+                  Área e Caixa 1
                 </label>
                 <div className="flex space-x-2">
                   <div className="flex-1">
@@ -604,7 +601,6 @@ export default function ServiceForm() {
                       name="cto_1_area"
                       value={formData.cto_1_area}
                       onChange={handleChange}
-                      required
                       placeholder="Digite a área"
                       className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                     />
@@ -613,12 +609,10 @@ export default function ServiceForm() {
                     name="cto_1_type"
                     value={formData.cto_1_type}
                     onChange={handleChange}
-                    required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
-                     <option value="1x8">1x8</option>
                     <option value="">Select caixa</option>
-                     <option value="0"> 0 </option>
+                    <option value="1x8">1x8</option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
@@ -626,7 +620,7 @@ export default function ServiceForm() {
 
               <div className="space-y-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Área e Caixa 2<RequiredField />
+                  Área e Caixa 2
                 </label>
                 <div className="flex space-x-2">
                   <div className="flex-1">
@@ -635,7 +629,6 @@ export default function ServiceForm() {
                       name="cto_2_area"
                       value={formData.cto_2_area}
                       onChange={handleChange}
-                      required
                       placeholder="Digite a área"
                       className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                     />
@@ -644,12 +637,10 @@ export default function ServiceForm() {
                     name="cto_2_type"
                     value={formData.cto_2_type}
                     onChange={handleChange}
-                    required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
-                    <option value="1x8">1x8</option>
                     <option value="">Select caixa</option>
-                     <option value="0"> 0 </option>
+                    <option value="1x8">1x8</option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
@@ -657,7 +648,7 @@ export default function ServiceForm() {
 
               <div className="space-y-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Área e Caixa 3<RequiredField />
+                  Área e Caixa 3
                 </label>
                 <div className="flex space-x-2">
                   <div className="flex-1">
@@ -666,7 +657,6 @@ export default function ServiceForm() {
                       name="cto_3_area"
                       value={formData.cto_3_area}
                       onChange={handleChange}
-                      required
                       placeholder="Digite a área"
                       className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                     />
@@ -675,12 +665,10 @@ export default function ServiceForm() {
                     name="cto_3_type"
                     value={formData.cto_3_type}
                     onChange={handleChange}
-                    required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
-                    <option value="1x8">1x8</option>
                     <option value="">Select caixa</option>
-                     <option value="0"> 0 </option>
+                    <option value="1x8">1x8</option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>

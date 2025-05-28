@@ -68,10 +68,10 @@ export default function Login() {
 
       if (error) throw error;
 
-      setSuccess('Email de recuperação enviado! Por favor, verifique sua caixa de entrada.');
+      setSuccess('Enviamos um link para redefinir sua senha. Verifique sua caixa de entrada e o spam. O email será enviado com o nome da empresa.');
     } catch (error: any) {
       console.error('Erro ao solicitar redefinição de senha:', error);
-      setError('Não foi possível enviar o email de recuperação. Tente novamente mais tarde.');
+      setError('Não foi possível enviar o email de recuperação. Verifique sua caixa de entrada e o spam. Tente novamente mais tarde.');
     } finally {
       setResetLoading(false);
     }
@@ -176,9 +176,9 @@ export default function Login() {
                 type="button"
                 onClick={handleForgotPassword}
                 disabled={resetLoading}
-                className="text-sm font-medium text-[#] hover:text-[#E67E22]/80 transition-colors"
+                className="text-sm font-medium text-[#E67E22] hover:text-[#E67E22]/80 transition-colors"
               >
-                {resetLoading ? 'Enviando...' : 'Esqueci minha senha'}
+                {resetLoading ? 'Enviando link...' : 'Redefinir senha'}
               </button>
             </div>
           </div>

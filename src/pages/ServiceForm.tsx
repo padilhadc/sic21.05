@@ -40,11 +40,11 @@ interface ServiceFormData {
   general_comments: string;
   images: string[];
   cto_1_area: string;
-  cto_1_type: '1x8' | '1x16';
+  cto_1_type: '1x8' | '1x16' | '';
   cto_2_area: string;
-  cto_2_type: '1x8' | '1x16';
+  cto_2_type: '1x8' | '1x16' | '';
   cto_3_area: string;
-  cto_3_type: '1x8' | '1x16';
+  cto_3_type: '1x8' | '1x16' | '';
 }
 
 interface TooltipProps {
@@ -104,11 +104,11 @@ export default function ServiceForm() {
     general_comments: "",
     images: [],
     cto_1_area: "",
-    cto_1_type: "1x8",
+    cto_1_type: "",
     cto_2_area: "",
-    cto_2_type: "1x8",
+    cto_2_type: "",
     cto_3_area: "",
-    cto_3_type: "1x8"
+    cto_3_type: ""
   });
 
   useEffect(() => {
@@ -368,14 +368,14 @@ export default function ServiceForm() {
     <div className="max-w-5xl mx-auto">
       <nav className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
         <a href="/dashboard" className="hover:text-gray-900 dark:hover:text-white transition-colors">
-          
+          Dashboard
         </a>
         <ChevronRight className="h-4 w-4" />
         <a href="/service/history" className="hover:text-gray-900 dark:hover:text-white transition-colors">
-          
+          Histórico de Serviços
         </a>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-gray-900 dark:text-white font-medium"> </span>
+        <span className="text-gray-900 dark:text-white font-medium">Novo Registro</span>
       </nav>
 
       <div className="flex justify-between items-center mb-8">
@@ -616,8 +616,8 @@ export default function ServiceForm() {
                     required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
-                    <option value="1x16"> 1X8 </option>
-                    <option value="1x8"> </option>
+                    <option value="">Select caixa</option>
+                    <option value="1x8">1x8</option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
@@ -646,8 +646,8 @@ export default function ServiceForm() {
                     required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
-                    <option value="1x16"> 1X8 </option>
-                    <option value="1x8"> </option>
+                    <option value="">Select caixa</option>
+                    <option value="1x8">1x8</option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
@@ -676,11 +676,9 @@ export default function ServiceForm() {
                     required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
-                    <option value="1x16"> 1X8 </option>
-                    <option value="1x8"> </option>
+                    <option value="">Select caixa</option>
+                    <option value="1x8">1x8</option>
                     <option value="1x16">1x16</option>
-                    
-                    
                   </select>
                 </div>
               </div>
@@ -711,7 +709,7 @@ export default function ServiceForm() {
                   required
                   value={formData.street}
                   onChange={handleChange}
-                  className="pl-10 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm: text-sm"
+                  className="pl-10 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                 />
               </div>
             </div>
@@ -719,6 +717,7 @@ export default function ServiceForm() {
             <div className="space-y-1">
               <label htmlFor="neighborhood" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Bairro<RequiredField />
+              
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

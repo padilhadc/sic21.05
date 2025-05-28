@@ -4,6 +4,7 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  @apply bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-all;
 }
 
 /* Dark mode styles */
@@ -60,7 +61,8 @@ body {
 
 /* Card hover effects */
 .hover\:shadow-md:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: translateY(-2px);
 }
 
@@ -120,8 +122,8 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  border-color: #002DFF;
-  background-color: #002DFF;
+  border-color: #06b6d4;
+  background-color: #06b6d4;
 }
 
 /* Dark mode transitions */
@@ -129,4 +131,42 @@ input[type="checkbox"]:checked {
   transition-property: background-color, border-color, color;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* Glass morphism effects */
+.glass-morphism {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Login page background */
+.login-bg {
+  background-image: url('/login-bg.jpg'); /* Substitua pelo caminho da imagem correta */
+  background-size: cover;
+  background-position: center;
+}
+
+/* Login container */
+.login-container {
+  @apply flex items-center justify-center min-h-screen p-4;
+}
+
+/* Login card */
+.login-card {
+  @apply glass-morphism p-8 w-full max-w-md mx-auto text-center;
+}
+
+.login-card h1 {
+  @apply text-2xl font-semibold mb-6 text-gray-900 dark:text-white;
+}
+
+.login-card input {
+  @apply w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.login-card button {
+  @apply w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-150;
 }

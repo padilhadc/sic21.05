@@ -21,7 +21,8 @@ import {
   HelpCircle,
   ChevronRight,
   AlertTriangle,
-  Check
+  Check,
+  Grid
 } from 'lucide-react';
 
 interface ServiceFormData {
@@ -30,7 +31,6 @@ interface ServiceFormData {
   company_name: string;
   available_slots: string;
   unit: string;
-  area_cx: string;
   contract_number: string;
   service_type: string;
   visited_cxs: string;
@@ -39,6 +39,12 @@ interface ServiceFormData {
   cto_location: string;
   general_comments: string;
   images: string[];
+  cto_1_area: string;
+  cto_1_type: '1x8' | '1x16';
+  cto_2_area: string;
+  cto_2_type: '1x8' | '1x16';
+  cto_3_area: string;
+  cto_3_type: '1x8' | '1x16';
 }
 
 interface TooltipProps {
@@ -89,7 +95,6 @@ export default function ServiceForm() {
     company_name: "",
     available_slots: "",
     unit: "",
-    area_cx: "",
     contract_number: "",
     service_type: "",
     visited_cxs: "",
@@ -98,6 +103,12 @@ export default function ServiceForm() {
     cto_location: "",
     general_comments: "",
     images: [],
+    cto_1_area: "",
+    cto_1_type: "1x8",
+    cto_2_area: "",
+    cto_2_type: "1x8",
+    cto_3_area: "",
+    cto_3_type: "1x8"
   });
 
   useEffect(() => {
@@ -112,6 +123,32 @@ export default function ServiceForm() {
     navigate('/dashboard');
     return null;
   }
+
+  const validateForm = () => {
+    const requiredFields = [
+      'operator_name',
+      'technician_name',
+      'company_name',
+      'contract_number',
+      'service_type',
+      'street',
+      'neighborhood',
+      'cto_location',
+      'general_comments',
+      'cto_1_area',
+      'cto_2_area',
+      'cto_3_area'
+    ];
+
+    const missingFields = requiredFields.filter(field => !formData[field as keyof ServiceFormData]);
+
+    if (missingFields.length > 0) {
+      setError('Por favor, preencha todos os campos obrigatórios.');
+      return false;
+    }
+
+    return true;
+  };
 
   const checkDuplicateService = async (contractNumber: string) => {
     const oneHourAgo = new Date();
@@ -253,8 +290,7 @@ export default function ServiceForm() {
     setError('');
     setSuccess(false);
 
-    if (!formData.general_comments) {
-      setError('O campo "Espelho do Clean Up" é obrigatório');
+    if (!validateForm()) {
       setLoading(false);
       return;
     }
@@ -265,7 +301,6 @@ export default function ServiceForm() {
     }
 
     try {
-      // Show loading notification
       setNotificationMessage('Salvando registro...');
       setNotificationStatus('loading');
       setShowNotification(true);
@@ -281,11 +316,9 @@ export default function ServiceForm() {
 
       if (submitError) throw submitError;
 
-      // Show success notification
       setNotificationMessage('Registro salvo com sucesso!');
       setNotificationStatus('success');
       
-      // Hide notification after 2 seconds and redirect
       setTimeout(() => {
         setShowNotification(false);
         navigate('/service/history');
@@ -335,14 +368,14 @@ export default function ServiceForm() {
     <div className="max-w-5xl mx-auto">
       <nav className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
         <a href="/dashboard" className="hover:text-gray-900 dark:hover:text-white transition-colors">
-          Dashboard
+          
         </a>
         <ChevronRight className="h-4 w-4" />
         <a href="/service/history" className="hover:text-gray-900 dark:hover:text-white transition-colors">
-          Atendimentos
+          
         </a>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-gray-900 dark:text-white font-medium">Novo Registro</span>
+        <span className="text-gray-900 dark:text-white font-medium"> </span>
       </nav>
 
       <div className="flex justify-between items-center mb-8">
@@ -544,21 +577,6 @@ export default function ServiceForm() {
             </div>
 
             <div className="space-y-1">
-              <label htmlFor="area_cx" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Área e Caixa<RequiredField />
-              </label>
-              <input
-                type="text"
-                id="area_cx"
-                name="area_cx"
-                required
-                value={formData.area_cx}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
-            </div>
-
-            <div className="space-y-1">
               <label htmlFor="visited_cxs" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 CXs Visitadas<RequiredField />
               </label>
@@ -571,6 +589,96 @@ export default function ServiceForm() {
                 onChange={handleChange}
                 className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
               />
+            </div>
+
+            {/* CTO Fields */}
+            <div className="md:col-span-2 space-y-4">
+              <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Área e Caixa 1<RequiredField />
+                </label>
+                <div className="flex space-x-2">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      name="cto_1_area"
+                      value={formData.cto_1_area}
+                      onChange={handleChange}
+                      required
+                      placeholder="Digite a área"
+                      className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                    />
+                  </div>
+                  <select
+                    name="cto_1_type"
+                    value={formData.cto_1_type}
+                    onChange={handleChange}
+                    required
+                    className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  >
+                    <option value="1x8">1x8</option>
+                    <option value="1x16">1x16</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Área e Caixa 2<RequiredField />
+                </label>
+                <div className="flex space-x-2">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      name="cto_2_area"
+                      value={formData.cto_2_area}
+                      onChange={handleChange}
+                      required
+                      placeholder="Digite a área"
+                      className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                    />
+                  </div>
+                  <select
+                    name="cto_2_type"
+                    value={formData.cto_2_type}
+                    onChange={handleChange}
+                    required
+                    className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  >
+                    <option value="1x8">1x8</option>
+                    <option value="1x16">1x16</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Área e Caixa 3<RequiredField />
+                </label>
+                <div className="flex space-x-2">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      name="cto_3_area"
+                      value={formData.cto_3_area}
+                      onChange={handleChange}
+                      required
+                      placeholder="Digite a área"
+                      className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                    />
+                  </div>
+                  <select
+                    name="cto_3_type"
+                    value={formData.cto_3_type}
+                    onChange={handleChange}
+                    required
+                    className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  >
+                    <option value="1x8">1x8</option>
+                    <option value="1x16">1x16</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -598,7 +706,7 @@ export default function ServiceForm() {
                   required
                   value={formData.street}
                   onChange={handleChange}
-                  className="pl-10 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  className="pl-10 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm: text-sm"
                 />
               </div>
             </div>

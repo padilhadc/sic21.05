@@ -41,18 +41,24 @@ interface ServiceRecord {
   operator_name: string;
   technician_name: string;
   company_name: string;
+  service_type: string;
+  created_at: string;
+  contract_number: string;
+  street: string;
+  neighborhood: string;
+  cto_location: string;
+  area_cx: string;
   available_slots: string;
   unit: string;
-  area_cx: string;
-  contract_number: string;
-  service_type: string;
   visited_cxs: string;
-  neighborhood: string;
-  street: string;
-  cto_location: string;
-  created_at: string;
   general_comments?: string;
   images?: string[];
+  cto_1_area?: string;
+  cto_1_type?: '1x8' | '1x16';
+  cto_2_area?: string;
+  cto_2_type?: '1x8' | '1x16';
+  cto_3_area?: string;
+  cto_3_type?: '1x8' | '1x16';
   isDuplicate?: boolean;
 }
 
@@ -708,6 +714,7 @@ export default function ServiceHistory() {
                   ))}
                   
                   <button
+                
                     onClick={() => paginate(currentPage + 1)}
                     disabled={currentPage === totalPages}
                     className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -1040,6 +1047,55 @@ export default function ServiceHistory() {
                     </div>
                   </div>
 
+                  {(selectedService.cto_1_area || selectedService.cto_2_area || selectedService.cto_3_area) && (
+                    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Áreas e Caixas</h4>
+                      <div className="space-y-4">
+                        {selectedService.cto_1_area && (
+                          <div className="flex items-center space-x-3">
+                            <div className="p-2 bg-blue-50 rounded-lg">
+                              <Grid className="h-5 w-5 text-blue-600" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-gray-500">Área e Caixa 1</p>
+                              <p className="text-base text-gray-900">
+                                {selectedService.cto_1_area} - {selectedService.cto_1_type}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {selectedService.cto_2_area && (
+                          <div className="flex items-center space-x-3">
+                            <div className="p-2 bg-green-50 rounded-lg">
+                              <Grid className="h-5 w-5 text-green-600" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-gray-500">Área e Caixa 2</p>
+                              <p className="text-base text-gray-900">
+                                {selectedService.cto_2_area} - {selectedService.cto_2_type}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {selectedService.cto_3_area && (
+                          <div className="flex items-center space-x-3">
+                            <div className="p-2 bg-purple-50 rounded-lg">
+                              <Grid className="h-5 w-5 text-purple-600" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-gray-500">Área e Caixa 3</p>
+                              <p className="text-base text-gray-900">
+                                {selectedService.cto_3_area} - {selectedService.cto_3_type}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {selectedService.general_comments && (
                     <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                       <div className="flex items-center space-x-2 mb-4">
@@ -1126,3 +1182,4 @@ export default function ServiceHistory() {
     </div>
   );
 }
+

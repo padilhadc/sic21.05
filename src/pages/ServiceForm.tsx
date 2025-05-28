@@ -616,8 +616,9 @@ export default function ServiceForm() {
                     required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
+                     <option value="1x8">1x8</option>
                     <option value="">Select caixa</option>
-                    <option value="1x8">1x8</option>
+                     <option value="1x8"> ### </option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
@@ -646,8 +647,9 @@ export default function ServiceForm() {
                     required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
+                     <option value="1x8">1x8</option>
                     <option value="">Select caixa</option>
-                    <option value="1x8">1x8</option>
+                     <option value="1x8"> ### </option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
@@ -676,8 +678,9 @@ export default function ServiceForm() {
                     required
                     className="w-24 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   >
-                    <option value="">Select caixa</option>
                     <option value="1x8">1x8</option>
+                    <option value="">Select caixa</option>
+                     <option value="1x8"> ### </option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>

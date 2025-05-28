@@ -618,7 +618,7 @@ export default function ServiceForm() {
                   >
                      <option value="1x8">1x8</option>
                     <option value="">Select caixa</option>
-                     <option value="">  </option>
+                     <option value="0"> 0 </option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
@@ -649,7 +649,7 @@ export default function ServiceForm() {
                   >
                     <option value="1x8">1x8</option>
                     <option value="">Select caixa</option>
-                     <option value="">  </option>
+                     <option value="0"> 0 </option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
@@ -680,7 +680,7 @@ export default function ServiceForm() {
                   >
                     <option value="1x8">1x8</option>
                     <option value="">Select caixa</option>
-                     <option value="">  </option>
+                     <option value="0"> 0 </option>
                     <option value="1x16">1x16</option>
                   </select>
                 </div>
